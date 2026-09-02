@@ -164,8 +164,22 @@ class claude(Vision, Reconfigurable):
         if "max_tokens" in fields and fields["max_tokens"].number_value:
             self.max_tokens = int(fields["max_tokens"].number_value)
 
-        LOGGER.info(f"initializing Claude vision with model={self.model_name}")
-        self.client = AsyncAnthropic(api_key=api_key)
+        workspace_id = (
+            fields["workspace_id"].string_value
+            or os.environ.get("ANTHROPIC_WORKSPACE_ID", "")
+        )
+
+        client_kwargs: dict = {"api_key": api_key}
+        if workspace_id:
+            client_kwargs["default_headers"] = {
+                "anthropic-workspace-id": workspace_id
+            }
+
+        LOGGER.info(
+            f"initializing Claude vision with model={self.model_name}"
+            + (f", workspace_id={workspace_id}" if workspace_id else "")
+        )
+        self.client = AsyncAnthropic(**client_kwargs)
 
     async def get_cam_image(self, camera_name: str) -> ViamImage:
         cam = cast(Camera, self.DEPS[Camera.get_resource_name(camera_name)])

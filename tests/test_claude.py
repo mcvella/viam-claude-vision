@@ -129,6 +129,37 @@ class TestReconfigure:
         )
         ctor.assert_called_once_with(api_key="env-key")
 
+    def test_passes_workspace_id(self, mock_client):
+        ctor, _ = mock_client
+        cam = make_camera()
+        Claude.new(
+            make_config(
+                {
+                    "api_key": "test-key",
+                    "camera": "cam",
+                    "workspace_id": "wrkspc_123",
+                }
+            ),
+            {Camera.get_resource_name("cam"): cam},
+        )
+        ctor.assert_called_once_with(
+            api_key="test-key",
+            default_headers={"anthropic-workspace-id": "wrkspc_123"},
+        )
+
+    def test_uses_env_workspace_id(self, mock_client, monkeypatch):
+        ctor, _ = mock_client
+        monkeypatch.setenv("ANTHROPIC_WORKSPACE_ID", "wrkspc_env")
+        cam = make_camera()
+        Claude.new(
+            make_config({"api_key": "test-key", "camera": "cam"}),
+            {Camera.get_resource_name("cam"): cam},
+        )
+        ctor.assert_called_once_with(
+            api_key="test-key",
+            default_headers={"anthropic-workspace-id": "wrkspc_env"},
+        )
+
 
 class TestClassifications:
     @pytest.mark.asyncio

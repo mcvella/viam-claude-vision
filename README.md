@@ -39,6 +39,7 @@ The following attributes are available for `mcvella:vision:claude` model:
 | Name | Type | Inclusion | Description |
 | ---- | ---- | --------- | ----------- |
 | `api_key` | string | **Required** | Anthropic API key from [console.anthropic.com](https://console.anthropic.com/settings/keys). Can also be supplied via the `ANTHROPIC_API_KEY` environment variable. |
+| `workspace_id` | string | Optional | Anthropic workspace ID (`wrkspc_...`) required for [identity-linked / multi-workspace API keys](https://platform.claude.com/docs/en/manage-claude/authentication). Can also be supplied via `ANTHROPIC_WORKSPACE_ID`. Find it under Settings → Workspaces in the Claude Console. |
 | `camera` | string | **Required** | Default camera dependency for the service. Camera-based API methods use the `camera_name` argument; add extra cameras via `depends_on` if needed. |
 | `model` | string | Optional | Claude model ID to use. Defaults to `claude-sonnet-4-6`. Examples: `claude-haiku-4-5`, `claude-opus-4-6`, `claude-sonnet-5`. |
 | `classification_prompt` | string | Optional | Default question for classifications. Defaults to `"describe this image"`. Overridden by `extra.question` when provided. |
@@ -52,6 +53,16 @@ Default (Claude Sonnet):
 ```json
 {
   "api_key": "YOUR_API_KEY",
+  "camera": "cam"
+}
+```
+
+Identity-linked / multi-workspace API key:
+
+```json
+{
+  "api_key": "YOUR_API_KEY",
+  "workspace_id": "wrkspc_...",
   "camera": "cam"
 }
 ```
