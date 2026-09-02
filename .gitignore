@@ -216,3 +216,8 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Viam module runtime
+viam-env/
+module.tar.gz
+.installed

@@ -1,0 +1,15 @@
+{
+  "module_id": "mcvella:claude-vision",
+  "visibility": "public",
+  "url": "https://github.com/mcvella/viam-claude-vision",
+  "description": "This vision model uses Anthropic Claude cloud models for image classification, querying, and object detection. Requires an Anthropic API key.",
+  "models": [
+    {
+      "api": "rdk:service:vision",
+      "model": "mcvella:vision:claude",
+      "markdown_link": "README.md#configure-your-vision-service",
+      "short_description": "Claude cloud vision for classification, Q&A, and detection"
+    }
+  ],
+  "entrypoint": "run.sh"
+}
