@@ -1,20 +1,17 @@
-#!/bin/bash
-cd `dirname $0`
+#!/usr/bin/env bash
+set -euo pipefail
 
-if [ -f .installed ]
-  then
-    source viam-env/bin/activate
-  else
-    python3 -m pip install --user virtualenv --break-system-packages
-    python3 -m venv viam-env
-    source viam-env/bin/activate
-    pip3 install --upgrade -r requirements.txt
-    if [ $? -eq 0 ]
-      then
-        touch .installed
-    fi
+cd "$(dirname "$0")"
+
+# Prefer the writable module data dir so installs survive package swaps.
+if [ -n "${VIAM_MODULE_DATA:-}" ]; then
+  VIRTUAL_ENV="${VIAM_MODULE_DATA}/.venv"
+else
+  VIRTUAL_ENV="$(pwd)/.venv"
 fi
+
+./setup.sh
 
 # Be sure to use `exec` so that termination signals reach the python process,
 # or handle forwarding termination signals manually
-exec python3 -m src $@
+exec "${VIRTUAL_ENV}/bin/python" -m src "$@"

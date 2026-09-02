@@ -11,5 +11,6 @@
       "short_description": "Claude cloud vision for classification, Q&A, and detection"
     }
   ],
-  "entrypoint": "run.sh"
+  "entrypoint": "run.sh",
+  "first_run": "setup.sh"
 }
